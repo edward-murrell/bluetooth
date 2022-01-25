@@ -123,6 +123,9 @@ type AdvertisementPayload interface {
 	// UUIDs and 128-bit UUIDs.
 	HasServiceUUID(UUID) bool
 
+	// Return the service data.
+	GetServiceData(UUID) ([]byte, error)
+
 	// Bytes returns the raw advertisement packet, if available. It returns nil
 	// if this data is not available.
 	Bytes() []byte
@@ -138,6 +141,9 @@ type AdvertisementFields struct {
 	// part of the advertisement packet, in data types such as "complete list of
 	// 128-bit UUIDs".
 	ServiceUUIDs []UUID
+
+	// List of Service Data found
+	ServiceData map[string][]byte
 }
 
 // advertisementFields wraps AdvertisementFields to implement the
@@ -162,6 +168,17 @@ func (p *advertisementFields) HasServiceUUID(uuid UUID) bool {
 		}
 	}
 	return false
+}
+
+// GetServiceData returns the BLE service data. Note that a device having
+// returned true for the above HasServiceUUID does not mean that the device
+// has transmitted the data yet.
+func (p *advertisementFields) GetServiceData(uuid UUID) ([]byte, error) {
+	data, ok := p.ServiceData[uuid.String()]
+	if ok {
+		return data, nil
+	}
+	return nil, errors.New("service key does not exist")
 }
 
 // Bytes returns nil, as structured advertisement data does not have the
