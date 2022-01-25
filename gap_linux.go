@@ -173,7 +173,10 @@ func (a *Adapter) Scan(callback func(*Adapter, ScanResult)) error {
 					continue
 				}
 				changes := sig.Body[1].(map[string]dbus.Variant)
-				props := devices[sig.Path]
+				props, ok := devices[sig.Path] // TODO: Work out why sometimes this is null
+				if !ok {
+					continue
+				}
 				for field, val := range changes {
 					switch field {
 					case "RSSI":
