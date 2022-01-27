@@ -192,7 +192,14 @@ func (a *Adapter) Scan(callback func(*Adapter, ScanResult)) error {
 							for key, rawVal := range rawMap {
 								readRawBytes, okB := rawVal.Value().([]byte)
 								if okB == true {
-									props.ServiceData[key] = readRawBytes
+									if len(props.ServiceData) == 0 {
+										props.ServiceData = map[string]interface{} {
+											key: readRawBytes,
+										}
+									} else {
+										props.ServiceData[key] = readRawBytes
+									}
+
 								}
 							}
 						}
