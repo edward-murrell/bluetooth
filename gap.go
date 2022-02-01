@@ -146,22 +146,22 @@ type AdvertisementFields struct {
 	ServiceData map[string][]byte
 }
 
-// advertisementFields wraps AdvertisementFields to implement the
+// InternalAdvertisementFields wraps AdvertisementFields to implement the
 // AdvertisementPayload interface. The methods to implement the interface (such
 // as LocalName) cannot be implemented on AdvertisementFields because they would
 // conflict with field names.
-type advertisementFields struct {
+type InternalAdvertisementFields struct {
 	AdvertisementFields
 }
 
 // LocalName returns the underlying LocalName field.
-func (p *advertisementFields) LocalName() string {
+func (p *InternalAdvertisementFields) LocalName() string {
 	return p.AdvertisementFields.LocalName
 }
 
 // HasServiceUUID returns true whether the given UUID is present in the
 // advertisement payload as a Service Class UUID.
-func (p *advertisementFields) HasServiceUUID(uuid UUID) bool {
+func (p *InternalAdvertisementFields) HasServiceUUID(uuid UUID) bool {
 	for _, u := range p.AdvertisementFields.ServiceUUIDs {
 		if u == uuid {
 			return true
@@ -173,7 +173,7 @@ func (p *advertisementFields) HasServiceUUID(uuid UUID) bool {
 // GetServiceData returns the BLE service data. Note that a device having
 // returned true for the above HasServiceUUID does not mean that the device
 // has transmitted the data yet.
-func (p *advertisementFields) GetServiceData(uuid UUID) ([]byte, error) {
+func (p *InternalAdvertisementFields) GetServiceData(uuid UUID) ([]byte, error) {
 	data, ok := p.ServiceData[uuid.String()]
 	if ok {
 		return data, nil
@@ -183,7 +183,7 @@ func (p *advertisementFields) GetServiceData(uuid UUID) ([]byte, error) {
 
 // Bytes returns nil, as structured advertisement data does not have the
 // original raw advertisement data available.
-func (p *advertisementFields) Bytes() []byte {
+func (p *InternalAdvertisementFields) Bytes() []byte {
 	return nil
 }
 

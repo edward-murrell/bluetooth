@@ -133,7 +133,7 @@ func makeScanResult(prph cbgo.Peripheral, advFields cbgo.AdvFields, rssi int) Sc
 		Address: Address{
 			UUID: uuid,
 		},
-		AdvertisementPayload: &advertisementFields{
+		AdvertisementPayload: &InternalAdvertisementFields{
 			AdvertisementFields{
 				LocalName:    advFields.LocalName,
 				ServiceUUIDs: serviceUUIDs,

@@ -255,7 +255,7 @@ func makeScanResult(props *device.Device1Properties) ScanResult {
 	return ScanResult{
 		RSSI:    props.RSSI,
 		Address: a,
-		AdvertisementPayload: &advertisementFields{
+		AdvertisementPayload: &InternalAdvertisementFields{
 			AdvertisementFields: AdvertisementFields{
 				LocalName:    props.Name,
 				ServiceUUIDs: serviceUUIDs,

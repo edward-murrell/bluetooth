@@ -36,7 +36,7 @@ func (a *Adapter) Scan(callback func(*Adapter, ScanResult)) (err error) {
 		}
 		// Note: the IsRandom bit is never set.
 		advertisement := args.Advertisement()
-		result.AdvertisementPayload = &advertisementFields{
+		result.AdvertisementPayload = &InternalAdvertisementFields{
 			AdvertisementFields{
 				LocalName: advertisement.LocalName(),
 			},
